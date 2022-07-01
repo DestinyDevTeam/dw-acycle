@@ -191,6 +191,7 @@ async function loopstakes(auction_id, auction_cycle) {
 
   for (let i = 0; i < quotient; i++) {
     await callLoopstakeAction(auction_id, auction_cycle, denominator);
+    await new Promise((resolve) => setTimeout(resolve, process.env.WAIT_BETWEEN_LOOPSTAKE_CYCLES));
     console.log(
       "callLoopstakeAction(",
       auction_id,
@@ -220,6 +221,7 @@ async function stakegiveout(auction_id, auction_cycle) {
   for (let i = 0; i < numberOfAcceptedTokens; i++) {
     for (let j = 0; j < quotient; j++) {
       await callStakegiveoutAction(auction_id, auction_cycle, denominator);
+      await new Promise((resolve) => setTimeout(resolve, process.env.WAIT_BETWEEN_STAKE_CYCLES));
     }
     await callStakegiveoutAction(auction_id, auction_cycle, remainder);
   }
@@ -350,16 +352,3 @@ async function getAcceptedTokensCount(auction_id) {
   const data = table.rows.filter((row) => row.auction_id == auction_id);
   return data.length;
 }
-
-/*
-
-TODO:
-
-1. Freeze (as usual)
-2. Get the total number of stakes
-3. Loop through all the stakes
-4. Get the total number of entries in totalstakes table
-5. Calculate and call stakegiveout
-6. Unfreeze (as usual)
-
-*/
