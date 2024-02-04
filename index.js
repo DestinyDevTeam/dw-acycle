@@ -1,5 +1,13 @@
 const cron = require("node-cron");
-const express = require("express");
+//const express = require("express");
+const express = require("express"); 
+const app = express();
+
+app.get("/", (req, res) => { res.send("Express on Vercel"); }); 
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`); });
+
 require("dotenv").config();
 
 const { Api, JsonRpc, RpcError } = require("eosjs");
@@ -22,7 +30,7 @@ const api = new Api({
 // import { setfreeze, recyclebyaid, stakegiveout } from "./eos-action.js"
 // const { setfreeze, recyclebyaid, stakegiveout } = require("./eos-action.js");
 
-app = express();
+//app = express();
 // app.listen(process.env.PORT);
 const ROWS_PER_PAGE = 20;
 
@@ -108,7 +116,7 @@ cron.schedule(process.env.CRON, async function () {
   }
 });
 
-app.listen(process.env.PORT);
+// app.listen(process.env.PORT);
 
 async function setfreeze(config_id, freeze_level) {
   try {
@@ -352,3 +360,5 @@ async function getAcceptedTokensCount(auction_id) {
   const data = table.rows.filter((row) => row.auction_id == auction_id);
   return data.length;
 }
+
+module.exports = app;
